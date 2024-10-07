@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
     const [customerName, setCustomerName] = useState('');
-    const [balance, setBalance] = useState(50000); // Initial balance set to 50000
+    const [balance, setBalance] = useState(50000); 
     const navigate = useNavigate();
 
     useEffect(() => {
         // Fetch customer details after login
         const fetchCustomerData = async () => {
-            const token = localStorage.getItem('token'); // Assuming you store the token in local storage
+            const token = localStorage.getItem('token'); 
             if (!token) {
                 navigate('/login'); // Redirect to login if no token
                 return;
@@ -21,12 +21,14 @@ const Home = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
-                setCustomerName(response.data.name); // Assuming the response contains the customer's name
+                setCustomerName(response.data.name); 
             } catch (error) {
                 console.error("Error fetching customer data:", error);
                 navigate('/login'); // Redirect to login on error
             }
         };
+
+        
 
         fetchCustomerData();
     }, [navigate]);
@@ -36,6 +38,11 @@ const Home = () => {
         navigate('/payment');
     };
 
+    const handleViewTransactions = () => {
+        // Redirect to transactions page
+        navigate('/transactions');
+    };
+    
     const handleLogout = () => {
         // Clear token and navigate to login page
         localStorage.removeItem('token');
@@ -52,6 +59,12 @@ const Home = () => {
                     onClick={handlePayment}
                 >
                     Make International Payment
+                </button>
+                <button 
+                    className="btn btn-info w-100 rounded-0 mt-2"
+                    onClick={handleViewTransactions}
+                >
+                    View Transactions
                 </button>
                 <button 
                     className="btn btn-danger w-100 rounded-0 mt-2"
