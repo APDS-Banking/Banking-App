@@ -7,6 +7,7 @@ const CustomerModel = require("./models/Customer");
 const helmet = require("helmet");
 const ExpressBrute = require("express-brute");
 const jwt = require("jsonwebtoken");
+const TransactionModel = require('./models/Transaction');
 
 const app = express();
 app.use(express.json());
@@ -82,12 +83,72 @@ app.post("/login", bruteforce.prevent, async (req, res) => {
   }
 });
 
-// Payment processing route (mock implementation)
-app.post("/payment", (req, res) => {
-  const { amount, accountNumber } = req.body;
+// Fetch customer details route
+app.get('/customer', async (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
 
-  // Add payment processing logic here
-  res.json({ message: `Payment of ${amount} to account ${accountNumber} processed successfully.` });
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET); // Verify the token
+    const user = await CustomerModel.findById(decoded.id).select('name'); // Fetch only the name field
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(user); // Send back the customer details
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching user data', error: err });
+  }
+});
+
+// Payment processing route
+app.post("/payment", async (req, res) => {
+  const { recipientName, recipientBank, accountNumber, amount, swiftCode } = req.body;
+
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) {
+      return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  try {
+      const decoded = jwt.verify(token, JWT_SECRET);
+      
+      // Find the user to check their balance
+      const user = await CustomerModel.findById(decoded.id);
+      if (!user) {
+          return res.status(404).json({ message: 'User not found.' });
+      }
+
+      // Validate payment amount
+      if (amount <= 0 || amount > user.balance) {
+          return res.status(400).json({ message: "Invalid payment amount." });
+      }
+
+      // Create a new transaction
+      const newTransaction = new TransactionModel({
+          userId: user._id, // Store the user ID
+          recipientName,
+          recipientBank,
+          accountNumber,
+          amount,
+          swiftCode,
+      });
+
+      await newTransaction.save(); // Save the transaction to the database
+
+      // Deduct the amount from the user's balance
+      user.balance -= amount;
+      await user.save(); // Update the user's balance in the database
+
+      res.json({ message: `Payment of R${amount} to ${recipientName} processed successfully.` });
+  } catch (error) {
+      console.error("Error processing payment:", error);
+      res.status(500).json({ message: "Failed to process payment. Please try again." });
+  }
 });
 
 app.listen(3001, () => {
