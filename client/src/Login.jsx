@@ -3,12 +3,21 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 function Login() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  // Regular expression for email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format validation
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate email format before submitting
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
 
     axios.post('http://localhost:3001/login', { email, password })
       .then(result => {
@@ -41,6 +50,7 @@ function Login() {
               name="email"
               className="form-control rounded-0"
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="mb-3">
@@ -53,6 +63,7 @@ function Login() {
               name="password"
               className="form-control rounded-0"
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
           <button type="submit" className="btn btn-success w-100 rounded-0">Login</button>

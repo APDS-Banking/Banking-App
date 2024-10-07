@@ -11,8 +11,41 @@ function Signup() {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    // Regular expressions for whitelisting
+    const nameRegex = /^[A-Za-z\s]+$/; // Only letters and spaces
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email validation
+    const accountRegex = /^\d{8,12}$/; // Account number must be 8 to 12 digits
+    const idRegex = /^\d{11}$/; // ID must be exactly 11 digits
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/; // Password validation
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate the inputs
+        if (!nameRegex.test(name)) {
+            alert("Name should only contain alphabets and spaces.");
+            return;
+        }
+
+        if (!emailRegex.test(email)) {
+            alert("Invalid email format. Please enter a valid email.");
+            return;
+        }
+
+        if (!accountRegex.test(account)) {
+            alert("Account number must be between 8 to 12 digits.");
+            return;
+        }
+
+        if (!idRegex.test(id)) {
+            alert("ID number must be exactly 11 digits.");
+            return;
+        }
+
+        if (!passwordRegex.test(password)) {
+            alert("Password must be 8-20 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.");
+            return;
+        }
 
         const accountNumber = parseInt(account);
         const idNumber = parseInt(id);
@@ -34,11 +67,11 @@ function Signup() {
             if (err.response && err.response.data && err.response.data.message === "User already exists") {
                 alert("User already exists. Please use a different email or account number.");
             } else {
-                alert("User already exists. Please use a different email or account number.");
+                alert("Registration failed. Please try again.");
             }
         }
     };
-        
+
     return (
         <div className="d-flex justify-content-center align-items-center bg-secondary vh-100">
             <div className="bg-white p-3 rounded w-25">

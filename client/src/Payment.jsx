@@ -9,11 +9,41 @@ const Payment = () => {
     const [amount, setAmount] = useState('');
     const [swiftCode, setSwiftCode] = useState('');
     const navigate = useNavigate();
-    
+
+    const nameRegex = /^[A-Za-z\s]+$/; // Only letters and spaces
+    const bankRegex = /^[A-Za-z0-9\s]+$/; // Letters, numbers, and spaces
+    const accountRegex = /^\d{8,12}$/; // Numeric, 8 to 12 digits
+    const amountRegex = /^[1-9]\d*(\.\d{1,2})?$/; // Positive number with up to 2 decimal places
+    const swiftRegex = /^[A-Za-z0-9]{8,11}$/; // 8-11 alphanumeric characters
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
+        // Whitelist validation
+        if (!nameRegex.test(recipientName)) {
+            alert("Invalid recipient name. Only letters and spaces are allowed.");
+            return;
+        }
+
+        if (!bankRegex.test(recipientBank)) {
+            alert("Invalid recipient bank. Only letters, numbers, and spaces are allowed.");
+            return;
+        }
+
+        if (!accountRegex.test(accountNumber)) {
+            alert("Invalid account number. It should be 8-12 digits.");
+            return;
+        }
+
+        if (!amountRegex.test(amount)) {
+            alert("Invalid amount. Enter a positive number with up to 2 decimal places.");
+            return;
+        }
+
+        if (!swiftRegex.test(swiftCode)) {
+            alert("Invalid SWIFT code. It should be 8 to 11 alphanumeric characters.");
+            return;
+        }
 
         const token = localStorage.getItem('token');
         if (!token) {
