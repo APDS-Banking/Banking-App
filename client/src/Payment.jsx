@@ -9,15 +9,13 @@ const Payment = () => {
     const [amount, setAmount] = useState('');
     const [swiftCode, setSwiftCode] = useState('');
     const navigate = useNavigate();
-    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
 
         const token = localStorage.getItem('token');
         if (!token) {
-            navigate('/login'); // Redirect to login if no token
+            navigate('/login');
             return;
         }
 
@@ -32,8 +30,8 @@ const Payment = () => {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            alert(response.data.message); // Notify user of success or failure
-            navigate('/home'); // Redirect back to home page after successful payment
+            alert(response.data.message);
+            navigate('/home');
         } catch (error) {
             console.error("Error processing payment:", error);
             alert("Failed to process payment. Please try again.");
@@ -41,7 +39,7 @@ const Payment = () => {
     };
 
     const handleCancel = () => {
-        navigate('/home'); // Redirect to home on cancel
+        navigate('/home');
     };
 
     return (
@@ -54,6 +52,7 @@ const Payment = () => {
                             <strong>Recipient Name</strong>
                         </label>
                         <input
+                            id="recipientName"
                             type="text"
                             placeholder="Enter recipient name"
                             className="form-control rounded-0"
@@ -66,6 +65,7 @@ const Payment = () => {
                             <strong>Recipient Bank</strong>
                         </label>
                         <input
+                            id="recipientBank"
                             type="text"
                             placeholder="Enter recipient bank"
                             className="form-control rounded-0"
@@ -78,6 +78,7 @@ const Payment = () => {
                             <strong>Account Number</strong>
                         </label>
                         <input
+                            id="accountNumber"
                             type="text"
                             placeholder="Enter account number"
                             className="form-control rounded-0"
@@ -90,6 +91,7 @@ const Payment = () => {
                             <strong>Amount (R)</strong>
                         </label>
                         <input
+                            id="amount"
                             type="number"
                             placeholder="Enter amount"
                             className="form-control rounded-0"
@@ -102,6 +104,7 @@ const Payment = () => {
                             <strong>SWIFT Code</strong>
                         </label>
                         <input
+                            id="swiftCode"
                             type="text"
                             placeholder="Enter SWIFT code"
                             className="form-control rounded-0"

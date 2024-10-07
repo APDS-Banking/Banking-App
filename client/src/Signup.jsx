@@ -13,25 +13,21 @@ function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const accountNumber = parseInt(account);
-        const idNumber = parseInt(id);
-
         try {
             const result = await axios.post('http://localhost:3001/register', {
                 name,
                 email,
-                account: accountNumber,
-                id: idNumber,
-                password
+                account: parseInt(account, 10),
+                id: parseInt(id, 10),
+                password,
             });
             console.log(result);
             alert("Registration successful! Please log in.");
             navigate('/login');
         } catch (err) {
             console.error(err);
-            // Check if the error indicates that the user already exists
-            if (err.response && err.response.data && err.response.data.message === "User already exists") {
-                alert("User already exists. Please use a different email or account number.");
+            if (err.response && err.response.data && err.response.data.message) {
+                alert(err.response.data.message);
             } else {
                 alert("An error occurred. Please try again.");
             }
@@ -48,7 +44,7 @@ function Signup() {
                             <strong>Name</strong>
                         </label>
                         <input
-                            id="name" // Add ID here
+                            id="name" 
                             type="text"
                             placeholder="Enter Name"
                             autoComplete="off"
@@ -63,7 +59,7 @@ function Signup() {
                             <strong>Email</strong>
                         </label>
                         <input
-                            id="email" // Add ID here
+                            id="email" 
                             type="email"
                             placeholder="Enter email"
                             autoComplete="off"
@@ -78,7 +74,7 @@ function Signup() {
                             <strong>Account Number</strong>
                         </label>
                         <input
-                            id="account" // Add ID here
+                            id="account"
                             type="number"
                             placeholder="Enter account number"
                             autoComplete="off"
@@ -93,7 +89,7 @@ function Signup() {
                             <strong>ID Number</strong>
                         </label>
                         <input
-                            id="id" // Add ID here
+                            id="id"
                             type="number"
                             placeholder="Enter ID number"
                             autoComplete="off"
@@ -108,7 +104,7 @@ function Signup() {
                             <strong>Password</strong>
                         </label>
                         <input
-                            id="password" // Add ID here
+                            id="password"
                             type="password"
                             placeholder="Enter password"
                             name="password"
@@ -125,9 +121,10 @@ function Signup() {
                 <Link to="/login" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
                     Login
                 </Link>
-            </div>
+ </div>
         </div>
     );
 }
 
 export default Signup;
+
