@@ -22,7 +22,7 @@ const transactionSchema = new mongoose.Schema({
     amount: {
         type: Number,
         required: true,
-        min: 1, // Ensure a minimum amount
+        min: 1, 
     },
     swiftCode: {
         type: String,

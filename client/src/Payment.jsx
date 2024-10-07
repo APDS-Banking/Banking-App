@@ -9,9 +9,11 @@ const Payment = () => {
     const [amount, setAmount] = useState('');
     const [swiftCode, setSwiftCode] = useState('');
     const navigate = useNavigate();
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
 
         const token = localStorage.getItem('token');
         if (!token) {

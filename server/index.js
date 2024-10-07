@@ -107,50 +107,53 @@ app.get('/customer', async (req, res) => {
 
 // Payment processing route
 app.post("/payment", async (req, res) => {
-    const { recipientName, recipientBank, accountNumber, amount, swiftCode } = req.body;
+  const { recipientName, recipientBank, accountNumber, amount, swiftCode } = req.body;
 
-    const token = req.headers.authorization?.split(' ')[1];
-    if (!token) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) {
+      return res.status(401).json({ message: 'Unauthorized' });
+  }
 
-    try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        
-        // Find the user to check their balance
-        const user = await CustomerModel.findById(decoded.id);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found.' });
-        }
+  try {
+      const decoded = jwt.verify(token, JWT_SECRET);
+      
+      // Find the user to check their balance
+      const user = await CustomerModel.findById(decoded.id);
+      if (!user) {
+          return res.status(404).json({ message: 'User not found.' });
+      }
 
-        // Validate payment amount
-        if (amount <= 0 || amount > user.balance) {
-            return res.status(400).json({ message: "Invalid payment amount." });
-        }
+      // Validate payment amount
+      if (amount <= 0 || amount > user.balance) {
+          return res.status(400).json({ message: "Invalid payment amount." });
+      }
 
-        // Create a new transaction
-        const newTransaction = new TransactionModel({
-            userId: user._id, // Store the user ID
-            recipientName,
-            recipientBank,
-            accountNumber,
-            amount,
-            swiftCode,
-        });
+      // Create a new transaction
+      const newTransaction = new TransactionModel({
+          userId: user._id,
+          recipientName,
+          recipientBank,
+          accountNumber,
+          amount,
+          swiftCode,
+      });
 
-        await newTransaction.save(); // Save the transaction to the database
+      await newTransaction.save();
 
-        // Deduct the amount from the user's balance
-        user.balance -= amount;
-        const updatedUser = await user.save(); // Update the user's balance in the database
+      // Deduct the amount from the user's balance
+      user.balance -= amount;
+      const updatedUser = await user.save();
 
-        console.log(`User balance after transaction: ${updatedUser.balance}`); // Log the updated balance
-        res.json({ message: `Payment of R${amount} to ${recipientName} processed successfully.` });
-    } catch (error) {
-        console.error("Error processing payment:", error);
-        res.status(500).json({ message: "Failed to process payment. Please try again." });
-    }
+      res.json({ 
+          message: `Payment of R${amount} to ${recipientName} processed successfully.`,
+          newBalance: updatedUser.balance // Include the new balance in the response
+      });
+  } catch (error) {
+      console.error("Error processing payment:", error);
+      res.status(500).json({ message: "Failed to process payment. Please try again." });
+  }
 });
+
 
 // Fetch user's transactions route
 app.get("/transactions", async (req, res) => {
