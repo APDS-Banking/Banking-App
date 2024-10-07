@@ -35,21 +35,22 @@ const Transactions = () => {
     };
 
     return (
-        <div className="d-flex justify-content-center align-items-center bg-secondary vh-100">
-            <div className="bg-white p-4 rounded w-75 text-center">
-                <h2>Your Transactions</h2>
+        <div className="d-flex justify-content-center align-items-center bg-secondary vh-100" id="transactions-container">
+            <div className="bg-white p-4 rounded w-75 text-center" id="transactions-content">
+                <h2 id="transactions-header">Your Transactions</h2>
                 <button 
                     className="btn btn-primary mb-3"
                     onClick={handleBack}
+                    id="back-button"
                 >
                     Back to Home
                 </button>
-                <ul className="list-group">
+                <ul className="list-group" id="transactions-list">
                     {transactions.length === 0 ? (
-                        <li className="list-group-item">No transactions found.</li>
+                        <li className="list-group-item" id="no-transactions">No transactions found.</li>
                     ) : (
                         transactions.map((transaction) => (
-                            <li className="list-group-item" key={transaction._id}>
+                            <li className="list-group-item" key={transaction._id} id={`transaction-${transaction._id}`}>
                                 <strong>Recipient:</strong> {transaction.recipientName} <br />
                                 <strong>Amount:</strong> R{transaction.amount} <br />
                                 <strong>Bank:</strong> {transaction.recipientBank} <br />
