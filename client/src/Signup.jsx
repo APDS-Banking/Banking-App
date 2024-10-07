@@ -1,7 +1,6 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 
 function Signup() {
     const [name, setName] = useState('');
@@ -34,7 +33,7 @@ function Signup() {
             if (err.response && err.response.data && err.response.data.message === "User already exists") {
                 alert("User already exists. Please use a different email or account number.");
             } else {
-                alert("User already exists. Please use a different email or account number.");
+                alert("An error occurred. Please try again.");
             }
         }
     };
@@ -49,6 +48,7 @@ function Signup() {
                             <strong>Name</strong>
                         </label>
                         <input
+                            id="name" // Add ID here
                             type="text"
                             placeholder="Enter Name"
                             autoComplete="off"
@@ -63,6 +63,7 @@ function Signup() {
                             <strong>Email</strong>
                         </label>
                         <input
+                            id="email" // Add ID here
                             type="email"
                             placeholder="Enter email"
                             autoComplete="off"
@@ -77,6 +78,7 @@ function Signup() {
                             <strong>Account Number</strong>
                         </label>
                         <input
+                            id="account" // Add ID here
                             type="number"
                             placeholder="Enter account number"
                             autoComplete="off"
@@ -91,6 +93,7 @@ function Signup() {
                             <strong>ID Number</strong>
                         </label>
                         <input
+                            id="id" // Add ID here
                             type="number"
                             placeholder="Enter ID number"
                             autoComplete="off"
@@ -105,6 +108,7 @@ function Signup() {
                             <strong>Password</strong>
                         </label>
                         <input
+                            id="password" // Add ID here
                             type="password"
                             placeholder="Enter password"
                             name="password"

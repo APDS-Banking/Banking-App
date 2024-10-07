@@ -36,6 +36,7 @@ function Login() {
             </label>
             <input
               type="email"
+              id="email"  
               placeholder="Enter email"
               autoComplete="off"
               name="email"
@@ -49,6 +50,7 @@ function Login() {
             </label>
             <input
               type="password"
+              id="password"  
               placeholder="Enter password"
               name="password"
               className="form-control rounded-0"
