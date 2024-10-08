@@ -1,0 +1,148 @@
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/graphql-v0.25.0/graphql-alpha-0.25.0.zap to C:\Users\fortu\ZAP\plugin\graphql-alpha-0.25.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/authhelper-v0.15.1/authhelper-beta-0.15.1.zap to C:\Users\fortu\ZAP\plugin\authhelper-beta-0.15.1.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/pscan-v0.0.1/pscan-alpha-0.0.1.zap to C:\Users\fortu\ZAP\plugin\pscan-alpha-0.0.1.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/diff-v16/diff-beta-16.zap to C:\Users\fortu\ZAP\plugin\diff-beta-16.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/spider-v0.12.0/spider-release-0.12.0.zap to C:\Users\fortu\ZAP\plugin\spider-release-0.12.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/openapi-v43/openapi-beta-43.zap to C:\Users\fortu\ZAP\plugin\openapi-beta-43.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/database-v0.6.0/database-alpha-0.6.0.zap to C:\Users\fortu\ZAP\plugin\database-alpha-0.6.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/exim-v0.12.0/exim-beta-0.12.0.zap to C:\Users\fortu\ZAP\plugin\exim-beta-0.12.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/requester-v7.7.0/requester-beta-7.7.0.zap to C:\Users\fortu\ZAP\plugin\requester-beta-7.7.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/retire-v0.41.0/retire-release-0.41.0.zap to C:\Users\fortu\ZAP\plugin\retire-release-0.41.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/ascanrules-v68/ascanrules-release-68.zap to C:\Users\fortu\ZAP\plugin\ascanrules-release-68.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/commonlib-v1.28.0/commonlib-release-1.28.0.zap to C:\Users\fortu\ZAP\plugin\commonlib-release-1.28.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/callhome-v0.13.0/callhome-release-0.13.0.zap to C:\Users\fortu\ZAP\plugin\callhome-release-0.13.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/quickstart-v50/quickstart-release-50.zap to C:\Users\fortu\ZAP\plugin\quickstart-release-50.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/webdriverwindows-v106/webdriverwindows-release-106.zap to C:\Users\fortu\ZAP\plugin\webdriverwindows-release-106.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/selenium-v15.30.0/selenium-release-15.30.0.zap to C:\Users\fortu\ZAP\plugin\selenium-release-15.30.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/zest-v47/zest-beta-47.zap to C:\Users\fortu\ZAP\plugin\zest-beta-47.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/alertFilters-v22/alertFilters-release-22.zap to C:\Users\fortu\ZAP\plugin\alertFilters-release-22.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/spiderAjax-v23.21.0/spiderAjax-release-23.21.0.zap to C:\Users\fortu\ZAP\plugin\spiderAjax-release-23.21.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/gettingStarted-v18/gettingStarted-release-18.zap to C:\Users\fortu\ZAP\plugin\gettingStarted-release-18.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/replacer-v19/replacer-release-19.zap to C:\Users\fortu\ZAP\plugin\replacer-release-19.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/pscanrules-v61/pscanrules-release-61.zap to C:\Users\fortu\ZAP\plugin\pscanrules-release-61.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/oast-v0.20.0/oast-beta-0.20.0.zap to C:\Users\fortu\ZAP\plugin\oast-beta-0.20.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/automation-v0.43.0/automation-beta-0.43.0.zap to C:\Users\fortu\ZAP\plugin\automation-beta-0.43.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/network-v0.18.0/network-beta-0.18.0.zap to C:\Users\fortu\ZAP\plugin\network-beta-0.18.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/reports-v0.34.0/reports-release-0.34.0.zap to C:\Users\fortu\ZAP\plugin\reports-release-0.34.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/scripts-v45.7.0/scripts-release-45.7.0.zap to C:\Users\fortu\ZAP\plugin\scripts-release-45.7.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/fuzz-v13.14.0/fuzz-beta-13.14.0.zap to C:\Users\fortu\ZAP\plugin\fuzz-beta-13.14.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/retest-v0.10.0/retest-alpha-0.10.0.zap to C:\Users\fortu\ZAP\plugin\retest-alpha-0.10.0.zap
+Downloading https://github.com/zaproxy/zap-extensions/releases/download/graaljs-v0.8.0/graaljs-alpha-0.8.0.zap to C:\Users\fortu\ZAP\plugin\graaljs-alpha-0.8.0.zap
+Replacing add-on GraphQL Support version 0.24.0
+Uninstalled add-on GraphQL Support version 0.24.0
+Installing new add-on GraphQL Support version 0.25.0
+Finished installing new add-on GraphQL Support version 0.25.0
+Replacing add-on Authentication Helper version 0.13.0
+Uninstalled add-on Authentication Helper version 0.13.0
+Installing new add-on Authentication Helper version 0.15.1
+Finished installing new add-on Authentication Helper version 0.15.1
+Installing new add-on Passive Scanner version 0.0.1
+Finished installing new add-on Passive Scanner version 0.0.1
+Replacing add-on Diff version 15.0.0
+Uninstalled add-on Diff version 15.0.0
+Installing new add-on Diff version 16.0.0
+Finished installing new add-on Diff version 16.0.0
+Replacing add-on Spider version 0.11.0
+Uninstalled add-on Spider version 0.11.0
+Installing new add-on Spider version 0.12.0
+Finished installing new add-on Spider version 0.12.0
+Replacing add-on OpenAPI Support version 40.0.0
+Uninstalled add-on OpenAPI Support version 40.0.0
+Installing new add-on OpenAPI Support version 43.0.0
+Finished installing new add-on OpenAPI Support version 43.0.0
+Replacing add-on Database version 0.4.0
+Uninstalled add-on Database version 0.4.0
+Installing new add-on Database version 0.6.0
+Finished installing new add-on Database version 0.6.0
+Replacing add-on Import/Export version 0.9.0
+Uninstalled add-on Import/Export version 0.9.0
+Installing new add-on Import/Export version 0.12.0
+Finished installing new add-on Import/Export version 0.12.0
+Replacing add-on Requester version 7.6.0
+Uninstalled add-on Requester version 7.6.0
+Installing new add-on Requester version 7.7.0
+Finished installing new add-on Requester version 7.7.0
+Replacing add-on Retire.js version 0.35.0
+Uninstalled add-on Retire.js version 0.35.0
+Installing new add-on Retire.js version 0.41.0
+Finished installing new add-on Retire.js version 0.41.0
+Replacing add-on Active scanner rules version 66.0.0
+Uninstalled add-on Active scanner rules version 66.0.0
+Installing new add-on Active scanner rules version 68.0.0
+Finished installing new add-on Active scanner rules version 68.0.0
+Replacing add-on Common Library version 1.25.0
+Uninstalled add-on Common Library version 1.25.0
+Installing new add-on Common Library version 1.28.0
+Finished installing new add-on Common Library version 1.28.0
+Replacing add-on Call Home version 0.12.0
+Uninstalled add-on Call Home version 0.12.0
+Installing new add-on Call Home version 0.13.0
+Finished installing new add-on Call Home version 0.13.0
+Replacing add-on Quick Start version 47.0.0
+Uninstalled add-on Quick Start version 47.0.0
+Installing new add-on Quick Start version 50.0.0
+Finished installing new add-on Quick Start version 50.0.0
+Replacing add-on Windows WebDrivers version 82.0.0
+Uninstalled add-on Windows WebDrivers version 82.0.0
+Installing new add-on Windows WebDrivers version 106.0.0
+Finished installing new add-on Windows WebDrivers version 106.0.0
+Replacing add-on Selenium version 15.23.0
+Uninstalled add-on Selenium version 15.23.0
+Installing new add-on Selenium version 15.30.0
+Finished installing new add-on Selenium version 15.30.0
+Replacing add-on Zest - Graphical Security Scripting Language version 45.0.0
+Uninstalled add-on Zest - Graphical Security Scripting Language version 45.0.0
+Installing new add-on Zest - Graphical Security Scripting Language version 47.0.0
+Finished installing new add-on Zest - Graphical Security Scripting Language version 47.0.0
+Replacing add-on Alert Filters version 21.0.0
+Uninstalled add-on Alert Filters version 21.0.0
+Installing new add-on Alert Filters version 22.0.0
+Finished installing new add-on Alert Filters version 22.0.0
+Replacing add-on Ajax Spider version 23.19.0
+Uninstalled add-on Ajax Spider version 23.19.0
+Installing new add-on Ajax Spider version 23.21.0
+Finished installing new add-on Ajax Spider version 23.21.0
+Replacing add-on Getting Started with ZAP Guide version 17.0.0
+Uninstalled add-on Getting Started with ZAP Guide version 17.0.0
+Installing new add-on Getting Started with ZAP Guide version 18.0.0
+Finished installing new add-on Getting Started with ZAP Guide version 18.0.0
+Replacing add-on Replacer version 17.0.0
+Uninstalled add-on Replacer version 17.0.0
+Installing new add-on Replacer version 19.0.0
+Finished installing new add-on Replacer version 19.0.0
+Replacing add-on Passive scanner rules version 58.0.0
+Uninstalled add-on Passive scanner rules version 58.0.0
+Installing new add-on Passive scanner rules version 61.0.0
+Finished installing new add-on Passive scanner rules version 61.0.0
+Replacing add-on OAST Support version 0.18.0
+Uninstalled add-on OAST Support version 0.18.0
+Installing new add-on OAST Support version 0.20.0
+Finished installing new add-on OAST Support version 0.20.0
+Replacing add-on Automation Framework version 0.40.0
+Uninstalled add-on Automation Framework version 0.40.0
+Installing new add-on Automation Framework version 0.43.0
+Finished installing new add-on Automation Framework version 0.43.0
+Replacing add-on Network version 0.16.0
+Uninstalled add-on Network version 0.16.0
+Installing new add-on Network version 0.18.0
+Finished installing new add-on Network version 0.18.0
+Replacing add-on Report Generation version 0.32.0
+Uninstalled add-on Report Generation version 0.32.0
+Installing new add-on Report Generation version 0.34.0
+Finished installing new add-on Report Generation version 0.34.0
+Replacing add-on Script Console version 45.3.0
+Uninstalled add-on Script Console version 45.3.0
+Installing new add-on Script Console version 45.7.0
+Finished installing new add-on Script Console version 45.7.0
+Replacing add-on Fuzzer version 13.13.0
+Uninstalled add-on Fuzzer version 13.13.0
+Installing new add-on Fuzzer version 13.14.0
+Finished installing new add-on Fuzzer version 13.14.0
+Replacing add-on Retest version 0.9.0
+Uninstalled add-on Retest version 0.9.0
+Installing new add-on Retest version 0.10.0
+Finished installing new add-on Retest version 0.10.0
+Replacing add-on GraalVM JavaScript version 0.7.0
+Uninstalled add-on GraalVM JavaScript version 0.7.0
+Installing new add-on GraalVM JavaScript version 0.8.0
+Finished installing new add-on GraalVM JavaScript version 0.8.0
