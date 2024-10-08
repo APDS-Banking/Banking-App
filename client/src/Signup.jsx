@@ -1,35 +1,77 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios'
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 function Signup() {
-    const [name, setName] = useState()
-    const [email, setEmail] = useState()
-    const [account, setAccount] = useState()
-    const [id, setID] = useState()
-    const [password, setPassword] = useState()
-    const navigate = useNavigate()
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [account, setAccount] = useState('');
+    const [id, setID] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+    // Regular expressions for whitelisting
+    const nameRegex = /^[A-Za-z\s]+$/; 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+    const accountRegex = /^\d{8,12}$/; 
+    const idRegex = /^\d{11}$/; 
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/; 
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // Validate the inputs
+        if (!nameRegex.test(name)) {
+            alert("Name should only contain alphabets and spaces.");
+            return;
+        }
+
+        if (!emailRegex.test(email)) {
+            alert("Invalid email format. Please enter a valid email.");
+            return;
+        }
+
+        if (!accountRegex.test(account)) {
+            alert("Account number must be between 8 to 12 digits.");
+            return;
+        }
+
+        if (!idRegex.test(id)) {
+            alert("ID number must be exactly 11 digits.");
+            return;
+        }
+
+        if (!passwordRegex.test(password)) {
+            alert("Password must be 8-20 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.");
+            return;
+        }
 
         const accountNumber = parseInt(account);
         const idNumber = parseInt(id);
 
-         axios.post('http://localhost:3001/register', {
-            name, 
-            email, 
-            account: accountNumber, 
-            id: idNumber, 
-            password
-        })
-        .then(result => {console.log(result)
-            navigate('/login')
-        })
-        .catch(err=> console.log(err))
-    }
-        
+        try {
+            const result = await axios.post('http://localhost:3001/register', {
+                name,
+                email,
+                account: accountNumber,
+                id: idNumber,
+                password
+            });
+            console.log(result);
+            alert("Registration successful! Please log in.");
+            navigate('/login');
+        } catch (err) {
+            console.error(err);
+            // Check if the error indicates that the user already exists
+            if (err.response && err.response.data && err.response.data.message === "User already exists") {
+                alert("User already exists. Please use a different email or account number.");
+            } else {
+                alert("Registration failed. Please try again.");
+            }
+        }
+    };
+
     return (
         <div className="d-flex justify-content-center align-items-center bg-secondary vh-100">
             <div className="bg-white p-3 rounded w-25">
@@ -40,12 +82,13 @@ function Signup() {
                             <strong>Name</strong>
                         </label>
                         <input
-                        type="text"
-                        placeholder="Enter Name"
-                        autoComplete="off"
-                        name="email"
-                        className="form-control rounded-0"
-                        onChange={(e) => setName(e.target.value)}
+                            type="text"
+                            placeholder="Enter Name"
+                            autoComplete="off"
+                            name="name"
+                            className="form-control rounded-0"
+                            onChange={(e) => setName(e.target.value)}
+                            required
                         />
                     </div>
                     <div className="mb-3">
@@ -53,12 +96,13 @@ function Signup() {
                             <strong>Email</strong>
                         </label>
                         <input
-                        type="email"
-                        placeholder="Enter email"
-                        autoComplete="off"
-                        name="email"
-                        className="form-control rounded-0"
-                        onChange={(e) => setEmail(e.target.value)}
+                            type="email"
+                            placeholder="Enter email"
+                            autoComplete="off"
+                            name="email"
+                            className="form-control rounded-0"
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
                         />
                     </div>
                     <div className="mb-3">
@@ -66,12 +110,13 @@ function Signup() {
                             <strong>Account Number</strong>
                         </label>
                         <input
-                        type="number"
-                        placeholder="Enter account number"
-                        autoComplete="off"
-                        name="account"
-                        className="form-control rounded-0"
-                        onChange={(e) => setAccount(e.target.value)}
+                            type="number"
+                            placeholder="Enter account number"
+                            autoComplete="off"
+                            name="account"
+                            className="form-control rounded-0"
+                            onChange={(e) => setAccount(e.target.value)}
+                            required
                         />
                     </div>
                     <div className="mb-3">
@@ -79,12 +124,13 @@ function Signup() {
                             <strong>ID Number</strong>
                         </label>
                         <input
-                        type="number"
-                        placeholder="Enter ID number"
-                        autoComplete="off"
-                        name="id"
-                        className="form-control rounded-0"
-                        onChange={(e) => setID(e.target.value)}
+                            type="number"
+                            placeholder="Enter ID number"
+                            autoComplete="off"
+                            name="id"
+                            className="form-control rounded-0"
+                            onChange={(e) => setID(e.target.value)}
+                            required
                         />
                     </div>
                     <div className="mb-3">
@@ -92,22 +138,22 @@ function Signup() {
                             <strong>Password</strong>
                         </label>
                         <input
-                        type="password"
-                        placeholder="Enter password"
-                        name="password"
-                        className="form-control rounded-0"
-                        onChange={(e) => setPassword(e.target.value)}
+                            type="password"
+                            placeholder="Enter password"
+                            name="password"
+                            className="form-control rounded-0"
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
                     </div>
                     <button type="submit" className="btn btn-success w-100 rounded-0">
                         Register
                     </button>
-                    </form>
-                    <p>Already have an account?</p>
-                    <Link to="/login" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
-                        Login
-                    </Link>
-                
+                </form>
+                <p>Already have an account?</p>
+                <Link to="/login" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
+                    Login
+                </Link>
             </div>
         </div>
     );
