@@ -9,7 +9,6 @@ import Transactions from './Transactions'
 
 
 function App() {
-
   return (
     <BrowserRouter>
     <Routes>
@@ -20,8 +19,8 @@ function App() {
       <Route path="/payment" element={<Payment />}></Route>
       <Route path="/transactions" element={<Transactions />}></Route>
       </Routes>
-      </BrowserRouter>
-  )
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

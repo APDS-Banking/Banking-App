@@ -8,8 +8,15 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState(''); // For storing error messages
   const navigate = useNavigate();
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
 
     axios.post('http://localhost:3001/login', { email, password })
       .then(result => {

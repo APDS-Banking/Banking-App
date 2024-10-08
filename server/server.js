@@ -1,6 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs');
 const app = express();
+
+// SSL Certificate
+const options = {
+  key: fs.readFileSync('keys/privatekey.pem'),
+  cert: fs.readFileSync('keys/certificate.pem') 
+};
 
 app.use(cors());
 app.use(express.json());
