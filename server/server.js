@@ -1,3 +1,4 @@
+const https = require('https');
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
@@ -12,7 +13,6 @@ const options = {
 app.use(cors());
 app.use(express.json());
 
-// Your routes here
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
   if (email === 'user@test.com' && password === 'password123') {
@@ -22,9 +22,9 @@ app.post('/login', (req, res) => {
 });
 
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(3001, () => {
-    console.log('Server running on http://localhost:3001');
+  https.createServer(options, app).listen(3001, () => {
+    console.log('Server running on https://localhost:3001');
   });
 }
 
-module.exports = app; // Export the app for testing
+module.exports = app; 

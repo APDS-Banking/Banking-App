@@ -151,15 +151,9 @@ function Signup() {
                 <Link to="/login" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
                     Login
                 </Link>
-                </form>
-                <p>Already have an account?</p>
-                <Link to="/login" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
-                    Login
-                </Link>
             </div>
         </div>
     );
 }
 
 export default Signup;
-

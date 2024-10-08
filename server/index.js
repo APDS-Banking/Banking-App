@@ -1,4 +1,4 @@
- require('dotenv').config(); // Load environment variables from .env file
+ require('dotenv').config(); 
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -20,10 +20,20 @@ mongoose.connect(
 
 // Brute force protection
 const store = new ExpressBrute.MemoryStore();
-const bruteforce = new ExpressBrute(store);
+
 
 // JWT Secret Key from environment variables
 const JWT_SECRET = process.env.JWT_SECRET;
+
+// Initialize Express Brute
+const bruteforce = new ExpressBrute(store, {
+  freeRetries: 5,
+  minWait: 5000,
+  maxWait: 60000,
+  failCallback: (req, res, next, options) => {
+    res.status(429).send('Too many requests, please try again later.');
+  }
+});
 
 // Register Route with bcrypt
 app.post("/register", async (req, res) => {

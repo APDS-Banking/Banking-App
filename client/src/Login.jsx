@@ -55,7 +55,8 @@ function Login() {
               className="form-control rounded-0"
               onChange={(e) => setEmail(e.target.value)}
               required
-            />
+
+          />
           </div>
           <div className="mb-3">
             <label htmlFor="password">
