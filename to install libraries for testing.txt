@@ -1,0 +1,21 @@
+to install:
+
+npm install --save-dev @babel/preset-env @babel/preset-react
+npm install --save-dev @babel/preset-env @babel/preset-react @babel/plugin-transform-runtime
+
+
+Mocking localStorage: I've added a mock for localStorage.setItem to prevent actual storage access during testing.
+Error Handling Test: Instead of checking for rendered error messages (which are not implemented in your Login component), I mock the console.error call, as it logs the error when login fails.
+
+
+pipeline setup:
+Updated Pipeline Plan
+Build: Run Vite to build the client (npm run build).
+Test: Run Jest tests (npm run test).
+Lint: Run ESLint to check for coding standards (npm run lint).
+
+
+Node.js 
+
+
+
