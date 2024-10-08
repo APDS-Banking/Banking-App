@@ -15,7 +15,7 @@ app.use(cors());
 app.use(helmet());
 
 mongoose.connect(
-  "mongodb+srv://shamisokasekesk:9w6TI2eOXGHW4INd@cluster0.dopxwyl.mongodb.net/customer?retryWrites=true&w=majority&appName=Cluster0"
+  "mongodb+srv://rutendoking:pT8rmQjVvGXuNi24@cluster0.np0md1n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 );
 
 // Brute force protection
