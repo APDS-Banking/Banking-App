@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 function Login() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // For storing error messages
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -19,10 +20,14 @@ function Login() {
           // Navigate to home page
           navigate('/home');
         } else {
-          console.error(result.data.message);
+          // Show error message if login failed
+          setErrorMessage(result.data.message || "Incorrect email or password.");
         }
       })
-      .catch(err => console.error("Error during login:", err));
+      .catch(err => {
+        console.error("Error during login:", err);
+        setErrorMessage("Failed to login. Please check your credentials and try again.");
+      });
   };
 
   return (
@@ -42,6 +47,7 @@ function Login() {
               name="email"
               className="form-control rounded-0"
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="mb-3">
@@ -55,11 +61,20 @@ function Login() {
               name="password"
               className="form-control rounded-0"
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
+
+          {errorMessage && (
+            <div className="alert alert-danger" role="alert">
+              {errorMessage}
+            </div>
+          )}
+
           <button type="submit" className="btn btn-success w-100 rounded-0">Login</button>
         </form>
-        <p>No account?</p>
+
+        <p className="mt-3">No account?</p>
         <Link to="/register" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
           Register
         </Link>

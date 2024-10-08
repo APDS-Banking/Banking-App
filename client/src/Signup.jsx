@@ -13,15 +13,42 @@ function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const accountNumber = parseInt(account);
-        const idNumber = parseInt(id);
+        // Regular expressions for input validation
+        const nameRegex = /^[a-zA-Z\s]+$/; // Only letters and spaces for names
+        const idRegex = /^\d{13}$/; // Exactly 13 digits for ID number
+        const accountRegex = /^\d{8}$/; // Exactly 8 digits for account number
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/; 
+
+        // Validate name
+        if (!nameRegex.test(name)) {
+            alert("Name can only contain letters and spaces.");
+            return;
+        }
+
+        // Validate ID number
+        if (!idRegex.test(id)) {
+            alert("ID number must be exactly 13 digits.");
+            return;
+        }
+
+        // Validate account number
+        if (!accountRegex.test(account)) {
+            alert("Account number must be exactly 8 digits.");
+            
+        }
+
+        if (!passwordRegex.test(password)) {
+            alert("Password must be 8-20 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.");
+        return;
+        }
+
 
         try {
             const result = await axios.post('http://localhost:3001/register', {
                 name,
                 email,
-                account: accountNumber,
-                id: idNumber,
+                account: parseInt(account),
+                id: parseInt(id),
                 password
             });
             console.log(result);
@@ -29,7 +56,6 @@ function Signup() {
             navigate('/login');
         } catch (err) {
             console.error(err);
-            // Check if the error indicates that the user already exists
             if (err.response && err.response.data && err.response.data.message === "User already exists") {
                 alert("User already exists. Please use a different email or account number.");
             } else {
@@ -37,7 +63,7 @@ function Signup() {
             }
         }
     };
-        
+
     return (
         <div className="d-flex justify-content-center align-items-center bg-secondary vh-100">
             <div className="bg-white p-3 rounded w-25">
@@ -48,7 +74,7 @@ function Signup() {
                             <strong>Name</strong>
                         </label>
                         <input
-                            id="name" // Add ID here
+                            id="name"
                             type="text"
                             placeholder="Enter Name"
                             autoComplete="off"
@@ -63,7 +89,7 @@ function Signup() {
                             <strong>Email</strong>
                         </label>
                         <input
-                            id="email" // Add ID here
+                            id="email"
                             type="email"
                             placeholder="Enter email"
                             autoComplete="off"
@@ -78,8 +104,8 @@ function Signup() {
                             <strong>Account Number</strong>
                         </label>
                         <input
-                            id="account" // Add ID here
-                            type="number"
+                            id="account"
+                            type="text"
                             placeholder="Enter account number"
                             autoComplete="off"
                             name="account"
@@ -93,8 +119,8 @@ function Signup() {
                             <strong>ID Number</strong>
                         </label>
                         <input
-                            id="id" // Add ID here
-                            type="number"
+                            id="id"
+                            type="text"
                             placeholder="Enter ID number"
                             autoComplete="off"
                             name="id"
@@ -108,7 +134,7 @@ function Signup() {
                             <strong>Password</strong>
                         </label>
                         <input
-                            id="password" // Add ID here
+                            id="password"
                             type="password"
                             placeholder="Enter password"
                             name="password"

@@ -9,11 +9,39 @@ const Payment = () => {
     const [amount, setAmount] = useState('');
     const [swiftCode, setSwiftCode] = useState('');
     const navigate = useNavigate();
-    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
+        // Regular expression and validation rules
+        const nameRegex = /^[a-zA-Z\s]+$/; // Letters and spaces only
+        const accountRegex = /^\d{8,16}$/; // 8 to 16 digits for account number
+        const swiftCodeRegex = /^[A-Za-z0-9]{8,11}$/; // 8 or 11 alphanumeric characters for SWIFT
+        const amountValue = parseFloat(amount);
+
+        // Validate recipient name
+        if (!nameRegex.test(recipientName)) {
+            alert("Recipient name can only contain letters and spaces.");
+            return;
+        }
+
+        // Validate account number
+        if (!accountRegex.test(accountNumber)) {
+            alert("Account number must be between 8 and 16 digits.");
+            return;
+        }
+
+        // Validate amount (must be a positive number)
+        if (isNaN(amountValue) || amountValue <= 0) {
+            alert("Amount must be a positive number.");
+            return;
+        }
+
+        // Validate SWIFT code
+        if (!swiftCodeRegex.test(swiftCode)) {
+            alert("SWIFT code must be 8 or 11 alphanumeric characters.");
+            return;
+        }
 
         const token = localStorage.getItem('token');
         if (!token) {
@@ -26,7 +54,7 @@ const Payment = () => {
                 recipientName,
                 recipientBank,
                 accountNumber,
-                amount,
+                amount: amountValue,
                 swiftCode,
             }, {
                 headers: { Authorization: `Bearer ${token}` },
