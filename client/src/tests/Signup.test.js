@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import Signup from '../Signup'; 
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -11,6 +11,10 @@ beforeAll(() => {
   window.alert = jest.fn(); // Mock the alert function
 });
 
+beforeEach(() => {
+  jest.clearAllMocks(); // Clear previous calls to alert
+});
+
 describe('Signup Component', () => {
   test('renders signup form', () => {
     render(
@@ -18,8 +22,6 @@ describe('Signup Component', () => {
         <Signup />
       </Router>
     );
-
-    screen.debug();
 
     expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
@@ -32,22 +34,19 @@ describe('Signup Component', () => {
   test('submits registration successfully', async () => {
     axios.post.mockResolvedValue({ data: { message: 'Registration successful!' } });
 
-    await act(async () => {
-      render(
-        <Router>
-          <Signup />
-        </Router>
-      );
+    render(
+      <Router>
+        <Signup />
+      </Router>
+    );
 
-      fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'John Doe' } });
-      fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'john@example.com' } });
-      fireEvent.change(screen.getByLabelText(/account number/i), { target: { value: '12345678' } });
-      fireEvent.change(screen.getByLabelText(/id number/i), { target: { value: '1234567890' } });
-      fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } });
+    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'John Doe' } });
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'john@example.com' } });
+    fireEvent.change(screen.getByLabelText(/account number/i), { target: { value: '12345678' } });
+    fireEvent.change(screen.getByLabelText(/id number/i), { target: { value: '1234567890' } });
+    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } });
 
-      // Submit the form
-      fireEvent.click(screen.getByRole('button', { name: /register/i }));
-    });
+    fireEvent.click(screen.getByRole('button', { name: /register/i }));
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith('http://localhost:3001/register', {
@@ -58,26 +57,31 @@ describe('Signup Component', () => {
         password: 'password123',
       });
     });
+
+    expect(window.alert).toHaveBeenCalledWith('Registration successful! Please log in.');
   });
 
   test('handles existing user error', async () => {
-    axios.post.mockRejectedValue({ response: { data: { message: 'User already exists' } } });
+    axios.post.mockRejectedValue({ response: { data: { message: 'User  already exists. Please use a different email or account number.' } } });
 
-    await act(async () => {
-      render(
-        <Router>
-          <Signup />
-        </Router>
-      );
+    render(
+      <Router>
+        <Signup />
+      </Router>
+    );
 
-      fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'existing@example.com' } });
-      fireEvent.click(screen.getByRole('button', { name: /register/i }));
-    });
+    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'John Doe' } });
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'existing@example.com' } });
+    fireEvent.change(screen.getByLabelText(/account number/i), { target: { value: '12345678' } });
+    fireEvent.change(screen.getByLabelText(/id number/i), { target: { value: '1234567890' } });
+    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /register/i }));
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalled();
     });
 
-    expect(await screen.findByText(/user already exists/i)).toBeInTheDocument();
+    expect (window.alert).toHaveBeenCalledWith('User  already exists. Please use a different email or account number.');
   });
 });
