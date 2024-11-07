@@ -1,13 +1,14 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
+import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
   server: {
     https: {
-      key: fs.readFileSync('keys/privatekey.pem'),
-      cert: fs.readFileSync('keys/certificate.pem'),
+      key: fs.readFileSync(path.resolve(__dirname, '../server/keys/privatekey.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, '../server/keys/certificate.pem')),
     },
     host: 'localhost',
     port: 5173,

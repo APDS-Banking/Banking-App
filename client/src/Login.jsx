@@ -86,6 +86,10 @@ function Login() {
         <Link to="/register" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
           Register
         </Link>
+        <Link to="/EmployeeLogin" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
+          Employee Login
+       </Link>
+
       </div>
     </div>
   );

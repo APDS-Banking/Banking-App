@@ -10,7 +10,12 @@ const options = {
   cert: fs.readFileSync('keys/certificate.pem') // SSL Certificate
 };
 
-app.use(cors());
+app.use(cors(
+  {
+    origin: "https://localhost:5173", 
+    credentials: true 
+}
+));
 app.use(express.json());
 
 // Example login route

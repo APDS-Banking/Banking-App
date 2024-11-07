@@ -44,7 +44,7 @@ function Signup() {
 
 
         try {
-            const result = await axios.post('http://localhost:/register', {
+            axios.post('https://localhost:3001/register', {
                 name,
                 email,
                 account: parseInt(account),
