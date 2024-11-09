@@ -8,26 +8,29 @@ function EmployeeLogin() {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleEmployeeSubmit = (e) => {
+  const handleEmployeeSubmit = async (e) => {
     e.preventDefault();
 
-    // Example API call to authenticate employee
-    axios.post('https://localhost:3001/employee/login', { email, password })
-      .then(result => {
-        if (result.data.token) {
-          // Store JWT token in localStorage
-          localStorage.setItem("employeeToken", result.data.token);
+    try {
+      // Note the use of `http` instead of `https` if you're still facing SSL issues.
+      const response = await axios.post('https://localhost:3001/employee/login', 
+        { email, password }, 
+        { withCredentials: true } // Ensure cookies and credentials are sent
+      );
 
-          // Redirect to employee dashboard or secure page
-          navigate('/employee/dashboard');
-        } else {
-          setErrorMessage(result.data.message || "Incorrect email or password.");
-        }
-      })
-      .catch(err => {
-        console.error("Error during employee login:", err);
-        setErrorMessage("Failed to login. Please check your credentials and try again.");
-      });
+      if (response.data.token) {
+        // Store the JWT token for employees
+        localStorage.setItem('employeeToken', response.data.token);
+
+        // Navigate to employee dashboard
+        navigate('/employee/dashboard');
+      } else {
+        setErrorMessage(response.data.message || "Incorrect email or password.");
+      }
+    } catch (err) {
+      console.error("Error during employee login:", err);
+      setErrorMessage("Failed to login. Please check your credentials and try again.");
+    }
   };
 
   return (
@@ -36,9 +39,7 @@ function EmployeeLogin() {
         <h2>Employee Login</h2>
         <form onSubmit={handleEmployeeSubmit}>
           <div className="mb-3">
-            <label htmlFor="email">
-              <strong>Email</strong>
-            </label>
+            <label htmlFor="email"><strong>Email</strong></label>
             <input
               type="email"
               id="email"
@@ -46,19 +47,19 @@ function EmployeeLogin() {
               autoComplete="off"
               className="form-control rounded-0"
               onChange={(e) => setEmail(e.target.value)}
+              value={email}
               required
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="password">
-              <strong>Password</strong>
-            </label>
+            <label htmlFor="password"><strong>Password</strong></label>
             <input
               type="password"
               id="password"
               placeholder="Enter password"
               className="form-control rounded-0"
               onChange={(e) => setPassword(e.target.value)}
+              value={password}
               required
             />
           </div>
@@ -69,7 +70,9 @@ function EmployeeLogin() {
             </div>
           )}
 
-          <button type="submit" className="btn btn-primary w-100 rounded-0">Login</button>
+          <button type="submit" className="btn btn-primary w-100 rounded-0">
+            Login
+          </button>
         </form>
       </div>
     </div>

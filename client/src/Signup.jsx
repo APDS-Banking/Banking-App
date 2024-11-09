@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { response } from '../../server/server';
 
 function Signup() {
     const [name, setName] = useState('');
@@ -51,7 +52,7 @@ function Signup() {
                 id: parseInt(id),
                 password
             });
-            console.log(result);
+            console.log(response.data);
             alert("Registration successful! Please log in.");
             navigate('/login');
         } catch (err) {
