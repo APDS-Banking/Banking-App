@@ -58,9 +58,9 @@ function EmployeeDashboard() {
             navigate('/login');
             return;
         }
-
+    
         try {
-            await axios.post(
+            const response = await axios.post(
                 `http://localhost:3001/transactions/${transactionId}/submit-swift`,
                 {},
                 { headers: { Authorization: `Bearer ${token}` } }
@@ -74,6 +74,7 @@ function EmployeeDashboard() {
             alert('Failed to submit transaction to SWIFT');
         }
     };
+    
 
     return (
         <div className="dashboard-container">
