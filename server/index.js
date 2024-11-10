@@ -1,4 +1,4 @@
- require('dotenv').config(); 
+require('dotenv').config(); 
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -78,13 +78,14 @@ app.get('/customer', async (req, res) => {
 });
 
 
-// Payment processing route
 app.post("/payment", async (req, res) => {
   const { recipientName, recipientBank, accountNumber, amount, swiftCode } = req.body;
   const token = req.headers.authorization?.split(' ')[1];
+  
   if (!token) {
       return res.status(401).json({ message: 'Unauthorized' });
   }
+
   try {
       const decoded = jwt.verify(token, JWT_SECRET);
       const user = await CustomerModel.findById(decoded.id);
@@ -92,12 +93,16 @@ app.post("/payment", async (req, res) => {
           return res.status(404).json({ message: 'User not found.' });
       }
 
+      // Check if the user has enough balance
       if (amount <= 0 || amount > user.balance) {
           return res.status(400).json({ message: "Invalid payment amount." });
       }
 
+      // Create a new transaction, including the customer's details
       const newTransaction = new TransactionModel({
-          userId: user._id,
+          userId: user._id,  // Link to customer
+          customerName: user.name, // Store customer name
+          customerAccountNumber: user.account, // Store customer account number
           recipientName,
           recipientBank,
           accountNumber,
@@ -105,7 +110,14 @@ app.post("/payment", async (req, res) => {
           swiftCode,
           status: 'Pending', // Set status to 'Pending'
       });
+
+      // Save the transaction
       await newTransaction.save();
+
+      // Optionally, update customer balance (if needed)
+      user.balance -= amount; // Deduct the amount from customer balance
+      await user.save();
+
       res.json({
           message: `Payment of R${amount} to ${recipientName} initiated successfully and is pending approval.`,
       });
@@ -114,6 +126,7 @@ app.post("/payment", async (req, res) => {
       res.status(500).json({ message: "Failed to process payment. Please try again." });
   }
 });
+
 
 // Fetch user's transactions route
 app.get("/transactions", async (req, res) => {

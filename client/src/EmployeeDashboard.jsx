@@ -87,8 +87,14 @@ function EmployeeDashboard() {
                             <h3 className="transaction-recipient">Recipient: {transaction.recipientName}</h3>
                             <p><strong>Amount:</strong> R{transaction.amount}</p>
                             <p><strong>Bank:</strong> {transaction.recipientBank}</p>
-                            <p><strong>Account Number:</strong> {transaction.accountNumber}</p>
+                            <p><strong>Recipient Account Number:</strong> {transaction.accountNumber}</p>
                             <p><strong>SWIFT Code:</strong> {transaction.swiftCode}</p>
+                            
+                            {/* Customer Information */}
+                            <h4>Customer Information</h4>
+                            <p><strong>Customer Name:</strong> {transaction.customerName}</p>
+                            <p><strong>Customer Account Number:</strong> {transaction.customerAccountNumber}</p>
+
                             <p><strong>Status:</strong> {transaction.status}</p>
                             <div className="transaction-actions">
                                 {transaction.status === 'Pending' && (
