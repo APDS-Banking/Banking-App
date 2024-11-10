@@ -5,15 +5,14 @@ import axios from 'axios';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // For storing error messages
   const navigate = useNavigate();
 
-  // Regular expression for email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validate email format before submitting
     if (!emailRegex.test(email)) {
       alert("Please enter a valid email address.");
       return;
@@ -28,10 +27,14 @@ function Login() {
           // Navigate to home page
           navigate('/home');
         } else {
-          console.error(result.data.message);
+          // Show error message if login failed
+          setErrorMessage(result.data.message || "Incorrect email or password.");
         }
       })
-      .catch(err => console.error("Error during login:", err));
+      .catch(err => {
+        console.error("Error during login:", err);
+        setErrorMessage("Failed to login. Please check your credentials and try again.");
+      });
   };
 
   return (
@@ -45,13 +48,15 @@ function Login() {
             </label>
             <input
               type="email"
+              id="email"  
               placeholder="Enter email"
               autoComplete="off"
               name="email"
               className="form-control rounded-0"
               onChange={(e) => setEmail(e.target.value)}
               required
-            />
+
+          />
           </div>
           <div className="mb-3">
             <label htmlFor="password">
@@ -59,6 +64,7 @@ function Login() {
             </label>
             <input
               type="password"
+              id="password"  
               placeholder="Enter password"
               name="password"
               className="form-control rounded-0"
@@ -66,12 +72,20 @@ function Login() {
               required
             />
           </div>
+
+          {errorMessage && (
+            <div className="alert alert-danger" role="alert">
+              {errorMessage}
+            </div>
+          )}
+
           <button type="submit" className="btn btn-success w-100 rounded-0">Login</button>
         </form>
-        <p>No account?</p>
-        <Link to="/register" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
-          Register
-        </Link>
+
+        <p className="mt-3">Employee?</p>
+        <Link to="/EmployeeLogin" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
+          Employee Login
+       </Link>
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 
 function Signup() {
     const [name, setName] = useState('');
@@ -21,41 +20,42 @@ function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate the inputs
+        // Regular expressions for input validation
+        const nameRegex = /^[a-zA-Z\s]+$/; // Only letters and spaces for names
+        const idRegex = /^\d{13}$/; // Exactly 13 digits for ID number
+        const accountRegex = /^\d{8}$/; // Exactly 8 digits for account number
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/; 
+
+        // Validate name
         if (!nameRegex.test(name)) {
-            alert("Name should only contain alphabets and spaces.");
+            alert("Name can only contain letters and spaces.");
             return;
         }
 
-        if (!emailRegex.test(email)) {
-            alert("Invalid email format. Please enter a valid email.");
-            return;
-        }
-
-        if (!accountRegex.test(account)) {
-            alert("Account number must be between 8 to 12 digits.");
-            return;
-        }
-
+        // Validate ID number
         if (!idRegex.test(id)) {
-            alert("ID number must be exactly 11 digits.");
+            alert("ID number must be exactly 13 digits.");
             return;
+        }
+
+        // Validate account number
+        if (!accountRegex.test(account)) {
+            alert("Account number must be exactly 8 digits.");
+            
         }
 
         if (!passwordRegex.test(password)) {
             alert("Password must be 8-20 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.");
-            return;
+        return;
         }
 
-        const accountNumber = parseInt(account);
-        const idNumber = parseInt(id);
 
         try {
-            const result = await axios.post('http://localhost:3001/register', {
+            const result = await axios.post('http://localhost:/register', {
                 name,
                 email,
-                account: accountNumber,
-                id: idNumber,
+                account: parseInt(account),
+                id: parseInt(id),
                 password
             });
             console.log(result);
@@ -63,11 +63,10 @@ function Signup() {
             navigate('/login');
         } catch (err) {
             console.error(err);
-            // Check if the error indicates that the user already exists
             if (err.response && err.response.data && err.response.data.message === "User already exists") {
                 alert("User already exists. Please use a different email or account number.");
             } else {
-                alert("Registration failed. Please try again.");
+                alert("An error occurred. Please try again.");
             }
         }
     };
@@ -82,6 +81,7 @@ function Signup() {
                             <strong>Name</strong>
                         </label>
                         <input
+                            id="name"
                             type="text"
                             placeholder="Enter Name"
                             autoComplete="off"
@@ -96,6 +96,7 @@ function Signup() {
                             <strong>Email</strong>
                         </label>
                         <input
+                            id="email"
                             type="email"
                             placeholder="Enter email"
                             autoComplete="off"
@@ -110,7 +111,8 @@ function Signup() {
                             <strong>Account Number</strong>
                         </label>
                         <input
-                            type="number"
+                            id="account"
+                            type="text"
                             placeholder="Enter account number"
                             autoComplete="off"
                             name="account"
@@ -124,7 +126,8 @@ function Signup() {
                             <strong>ID Number</strong>
                         </label>
                         <input
-                            type="number"
+                            id="id"
+                            type="text"
                             placeholder="Enter ID number"
                             autoComplete="off"
                             name="id"
@@ -138,6 +141,7 @@ function Signup() {
                             <strong>Password</strong>
                         </label>
                         <input
+                            id="password"
                             type="password"
                             placeholder="Enter password"
                             name="password"

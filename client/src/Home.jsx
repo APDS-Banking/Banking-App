@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
     const [customerName, setCustomerName] = useState('');
+    const [accountNumber, setAccountNumber] = useState(''); // Add state for account number
     const [balance, setBalance] = useState(50000); 
     const navigate = useNavigate();
 
@@ -22,13 +23,12 @@ const Home = () => {
                 });
 
                 setCustomerName(response.data.name); 
+                setAccountNumber(response.data.account); // Set the account number
             } catch (error) {
                 console.error("Error fetching customer data:", error);
                 navigate('/login'); // Redirect to login on error
             }
         };
-
-        
 
         fetchCustomerData();
     }, [navigate]);
@@ -53,7 +53,8 @@ const Home = () => {
         <div className="d-flex justify-content-center align-items-center bg-secondary vh-100">
             <div className="bg-white p-4 rounded w-25 text-center">
                 <h1>Hello, {customerName}!</h1>
-                <p>Your account balance: R {balance}</p>
+                <p><strong>Account Number:</strong> {accountNumber}</p> {/* Display Account Number */}
+                <p><strong>Your account balance:</strong> R {balance}</p>
                 <button 
                     className="btn btn-success w-100 rounded-0"
                     onClick={handlePayment}
