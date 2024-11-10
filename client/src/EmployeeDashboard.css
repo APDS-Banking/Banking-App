@@ -1,0 +1,75 @@
+.dashboard-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f7fc;
+}
+
+.dashboard-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+}
+
+.transactions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.transaction-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-recipient {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.transaction-actions {
+    margin-top: 15px;
+}
+
+button {
+    padding: 8px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.approve-button {
+    background-color: #28a745;
+    color: white;
+}
+
+.approve-button:hover {
+    background-color: #218838;
+}
+
+.reject-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.reject-button:hover {
+    background-color: #c82333;
+}
+
+.swift-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.swift-button:hover {
+    background-color: #0069d9;
+}
+
+p {
+    color: #555;
+    margin: 5px 0;
+}

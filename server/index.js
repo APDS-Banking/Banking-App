@@ -14,18 +14,14 @@ app.use(express.json());
 app.use(cors());
 app.use(helmet());
 
-
 mongoose.connect(
-  "mongodb+srv://rutendoking:pT8rmQjVvGXuNi24@cluster0.np0md1n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  "mongodb+srv://shamisokasekesk:9w6TI2eOXGHW4INd@cluster0.dopxwyl.mongodb.net/customer?retryWrites=true&w=majority&appName=Cluster0"
 );
 
 // Brute force protection
 const store = new ExpressBrute.MemoryStore();
-
-
 // JWT Secret Key from environment variables
 const JWT_SECRET = process.env.JWT_SECRET;
-
 // Initialize Express Brute
 const bruteforce = new ExpressBrute(store, {
   freeRetries: 5,
@@ -36,75 +32,40 @@ const bruteforce = new ExpressBrute(store, {
   }
 });
 
-// Register Route with bcrypt
-app.post("/register", async (req, res) => {
-  try {
-    const { name, email, account, id, password } = req.body;
-
-    // Check if email is already registered
-    const existingUser = await CustomerModel.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "Email already exists" });
-    }
-
-    // Hash the password with salt
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Save user with hashed password
-    const newUser = new CustomerModel({
-      name,
-      email,
-      account,
-      id,
-      password: hashedPassword,
-    });
-
-    const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
-  } catch (err) {
-    res.status(500).json({ message: "Error registering user", error: err });
-  }
-});
-
 // Login Route with bcrypt verification and JWT
 app.post("/login", bruteforce.prevent, async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await CustomerModel.findOne({ email });
-
-    if (!user) {
-      return res.status(400).json({ message: "Account does not exist" });
+    // Find customer by email
+    const customer = await CustomerModel.findOne({ email });
+    if (!customer) {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (isMatch) {
-      // Generate JWT token
-      const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, {
-        expiresIn: "1h",
-      });
-      res.json({ message: "Login success", token });
-    } else {
-      res.status(400).json({ message: "Incorrect password!" });
+    // Compare entered password with the stored hashed password
+    const isMatch = await bcrypt.compare(password, customer.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
-  } catch (err) {
-    res.status(500).json({ message: "Login error", error: err });
+    // Generate JWT token
+    const token = jwt.sign({ id: customer._id }, JWT_SECRET, { expiresIn: "1h" });
+    res.json({ message: "Customer login successful", token });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
 // Fetch customer details route
 app.get('/customer', async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
-  
   if (!token) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET); // Verify the token
-    const user = await CustomerModel.findById(decoded.id).select('name'); // Fetch only the name field
+    const user = await CustomerModel.findById(decoded.id).select('name account'); // Fetch both name and account fields
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -116,30 +77,25 @@ app.get('/customer', async (req, res) => {
   }
 });
 
+
 // Payment processing route
 app.post("/payment", async (req, res) => {
   const { recipientName, recipientBank, accountNumber, amount, swiftCode } = req.body;
-
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
       return res.status(401).json({ message: 'Unauthorized' });
   }
-
   try {
       const decoded = jwt.verify(token, JWT_SECRET);
-      
-      // Find the user to check their balance
       const user = await CustomerModel.findById(decoded.id);
       if (!user) {
           return res.status(404).json({ message: 'User not found.' });
       }
 
-      // Validate payment amount
       if (amount <= 0 || amount > user.balance) {
           return res.status(400).json({ message: "Invalid payment amount." });
       }
 
-      // Create a new transaction
       const newTransaction = new TransactionModel({
           userId: user._id,
           recipientName,
@@ -147,17 +103,11 @@ app.post("/payment", async (req, res) => {
           accountNumber,
           amount,
           swiftCode,
+          status: 'Pending', // Set status to 'Pending'
       });
-
       await newTransaction.save();
-
-      // Deduct the amount from the user's balance
-      user.balance -= amount;
-      const updatedUser = await user.save();
-
-      res.json({ 
-          message: `Payment of R${amount} to ${recipientName} processed successfully.`,
-          newBalance: updatedUser.balance // Include the new balance in the response
+      res.json({
+          message: `Payment of R${amount} to ${recipientName} initiated successfully and is pending approval.`,
       });
   } catch (error) {
       console.error("Error processing payment:", error);
@@ -165,17 +115,14 @@ app.post("/payment", async (req, res) => {
   }
 });
 
-
 // Fetch user's transactions route
 app.get("/transactions", async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
       return res.status(401).json({ message: 'Unauthorized' });
   }
-
   try {
       const decoded = jwt.verify(token, JWT_SECRET);
-      
       // Fetch transactions for the logged-in user
       const transactions = await TransactionModel.find({ userId: decoded.id });
       res.json(transactions); // Send back the list of transactions
@@ -184,7 +131,60 @@ app.get("/transactions", async (req, res) => {
   }
 });
 
+// Route to update transaction status (approve/reject)
+app.put('/transactions/:id/status', async (req, res) => {
+  const { status } = req.body;
+  if (!['Approved', 'Rejected'].includes(status)) {
+      return res.status(400).json({ message: 'Invalid status value' });
+  }
 
+  try {
+      const transaction = await TransactionModel.findById(req.params.id);
+      if (!transaction) {
+          return res.status(404).json({ message: 'Transaction not found' });
+      }
+
+      if (transaction.status !== 'Pending') {
+          return res.status(400).json({ message: 'Only pending transactions can be updated' });
+      }
+
+      transaction.status = status;
+      await transaction.save();
+      res.json({ message: `Transaction ${status.toLowerCase()} successfully`, transaction });
+  } catch (error) {
+      res.status(500).json({ message: 'Error updating transaction status', error });
+  }
+});
+
+// Fetch only pending transactions for employees
+app.get('/employee/transactions', async (req, res) => {
+  try {
+      const transactions = await TransactionModel.find({ status: 'Pending' });
+      res.json(transactions);
+  } catch (error) {
+      res.status(500).json({ message: 'Error fetching transactions', error });
+  }
+});
+
+// Route to submit an approved transaction to SWIFT
+app.post('/transactions/:id/submit-swift', async (req, res) => {
+  try {
+      const transaction = await TransactionModel.findById(req.params.id);
+      if (!transaction) {
+          return res.status(404).json({ message: 'Transaction not found' });
+      }
+
+      if (transaction.status !== 'Approved') {
+          return res.status(400).json({ message: 'Only approved transactions can be submitted to SWIFT' });
+      }
+
+      transaction.status = 'Submitted to SWIFT';
+      await transaction.save();
+      res.json({ message: 'Transaction submitted to SWIFT', transaction });
+  } catch (error) {
+      res.status(500).json({ message: 'Error submitting transaction to SWIFT', error });
+  }
+});
 app.listen(3001, () => {
   console.log("Server is running on port 3001");
 });

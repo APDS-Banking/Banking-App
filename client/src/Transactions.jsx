@@ -46,19 +46,21 @@ const Transactions = () => {
                     Back to Home
                 </button>
                 <ul className="list-group" id="transactions-list">
-                    {transactions.length === 0 ? (
-                        <li className="list-group-item" id="no-transactions">No transactions found.</li>
-                    ) : (
-                        transactions.map((transaction) => (
-                            <li className="list-group-item" key={transaction._id} id={`transaction-${transaction._id}`}>
-                                <strong>Recipient:</strong> {transaction.recipientName} <br />
-                                <strong>Amount:</strong> R{transaction.amount} <br />
-                                <strong>Bank:</strong> {transaction.recipientBank} <br />
-                                <strong>Date:</strong> {new Date(transaction.createdAt).toLocaleString()} <br />
-                            </li>
-                        ))
-                    )}
-                </ul>
+    {transactions.length === 0 ? (
+        <li className="list-group-item" id="no-transactions">No transactions found.</li>
+    ) : (
+        transactions.map((transaction) => (
+            <li className="list-group-item" key={transaction._id} id={`transaction-${transaction._id}`}>
+                <strong>Recipient:</strong> {transaction.recipientName} <br />
+                <strong>Amount:</strong> R{transaction.amount} <br />
+                <strong>Bank:</strong> {transaction.recipientBank} <br />
+                <strong>Status:</strong> {transaction.status} <br />
+                <strong>Date:</strong> {new Date(transaction.createdAt).toLocaleString()} <br />
+            </li>
+        ))
+    )}
+</ul>
+
             </div>
         </div>
     );

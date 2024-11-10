@@ -6,6 +6,9 @@ import Login from './Login'
 import Home from './Home'
 import Payment from './Payment'
 import Transactions from './Transactions'
+import EmployeeLogin from './EmployeeLogin'
+import EmployeeDashboard from './EmployeeDashboard'
+
 
 
 function App() {
@@ -18,6 +21,8 @@ function App() {
       <Route path="/home" element={<Home />}></Route>
       <Route path="/payment" element={<Payment />}></Route>
       <Route path="/transactions" element={<Transactions />}></Route>
+      <Route path="/EmployeeDashboard" element={<EmployeeDashboard />} />
+      <Route path="/EmployeeLogin" element={<EmployeeLogin />} />
       </Routes>
     </BrowserRouter>
   );

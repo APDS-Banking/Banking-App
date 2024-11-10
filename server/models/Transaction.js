@@ -1,4 +1,3 @@
-// models/Transaction.js
 const mongoose = require('mongoose');
 
 const transactionSchema = new mongoose.Schema({
@@ -6,6 +5,7 @@ const transactionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Customer',
+        required: true
     },
     recipientName: {
         type: String,
@@ -22,11 +22,16 @@ const transactionSchema = new mongoose.Schema({
     amount: {
         type: Number,
         required: true,
-        min: 1, 
+        min: 1,
     },
     swiftCode: {
         type: String,
         required: true,
+    },
+    status: {
+        type: String,
+        enum: ['Pending', 'Approved', 'Rejected'],
+        default: 'Pending',
     },
     createdAt: {
         type: Date,

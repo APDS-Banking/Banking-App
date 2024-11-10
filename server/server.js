@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const app = express();
+const dotenv = require('dotenv');
+dotenv.config();
 
 // SSL Certificate options
 const options = {
@@ -22,6 +24,16 @@ app.post('/login', (req, res) => {
   return res.status(401).json({ error: 'Invalid credentials' });
 });
 
+// Employee login route
+app.post('/employee/login', (req, res) => {
+  const { email, password } = req.body;
+  
+  // Mock validation for an employee
+  if (email === 'employee@test.com' && password === 'employee123') {
+    return res.json({ token: 'employee-mock-token' });
+  }
+  return res.status(401).json({ error: 'Invalid employee credentials' });
+});
 
 if (process.env.NODE_ENV !== 'test') {
   https.createServer(options, app).listen(3001, () => {

@@ -82,10 +82,10 @@ function Login() {
           <button type="submit" className="btn btn-success w-100 rounded-0">Login</button>
         </form>
 
-        <p className="mt-3">No account?</p>
-        <Link to="/register" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
-          Register
-        </Link>
+        <p className="mt-3">Employee?</p>
+        <Link to="/EmployeeLogin" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
+          Employee Login
+       </Link>
       </div>
     </div>
   );
