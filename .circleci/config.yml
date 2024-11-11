@@ -69,10 +69,9 @@ jobs:
           key: v1-test-results-{{ checksum "client/test-results" }}
 
   sonarqube:
-    working_directory: ~/build
     docker:
       - image: sonarsource/sonar-scanner-cli
-        resource_class: small
+    resource_class: small  # Move resource_class here
     steps:
       - run: find
       - attach_workspace: 
@@ -107,3 +106,6 @@ workflows:
       - test:
           requires:
             - install-dependencies
+      - sonarqube:  # Add sonarqube job to the workflow
+          requires:
+            - test  # Ensure it runs after tests
