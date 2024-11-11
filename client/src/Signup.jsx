@@ -10,6 +10,13 @@ function Signup() {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    // Regular expressions for whitelisting
+    const nameRegex = /^[A-Za-z\s]+$/; // Only letters and spaces
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email validation
+    const accountRegex = /^\d{8,12}$/; // Account number must be 8 to 12 digits
+    const idRegex = /^\d{11}$/; // ID must be exactly 11 digits
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/; // Password validation
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
