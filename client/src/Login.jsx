@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import Cookies from 'js-cookie'; // Import js-cookie to get the CSRF token
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -8,7 +9,7 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState(''); // For storing error messages
   const navigate = useNavigate();
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,7 +19,14 @@ function Login() {
       return;
     }
 
-    axios.post('http://localhost:3001/login', { email, password })
+    // Get the CSRF token from the cookie
+    const csrfToken = Cookies.get('XSRF-TOKEN'); 
+
+    axios.post('http://localhost:3001/login', { email, password }, {
+      headers: {
+        'X-XSRF-TOKEN': csrfToken 
+      }
+    })
       .then(result => {
         if (result.data.token) {
           // Store JWT token in localStorage
@@ -55,8 +63,7 @@ function Login() {
               className="form-control rounded-0"
               onChange={(e) => setEmail(e.target.value)}
               required
-
-          />
+            />
           </div>
           <div className="mb-3">
             <label htmlFor="password">
@@ -85,7 +92,7 @@ function Login() {
         <p className="mt-3">Employee?</p>
         <Link to="/EmployeeLogin" className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
           Employee Login
-       </Link>
+        </Link>
       </div>
     </div>
   );

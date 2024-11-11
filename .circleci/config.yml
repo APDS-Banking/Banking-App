@@ -19,7 +19,7 @@ jobs:
           command: |
             cd client
             npm ci  # Use clean install for CI environments
-      - save_cache:  # Save node_modules to the cache
+      - save_cache:  # Save node_modules to the cacheaa
           paths:
             - client/node_modules
           key: v1-dependencies-{{ checksum "client/package-lock.json" }}
@@ -68,6 +68,23 @@ jobs:
             - client/test-results
           key: v1-test-results-{{ checksum "client/test-results" }}
 
+
+sonar:
+    docker:
+      - image: sonarsource/sonar-scanner-cli:latest
+    steps:
+      - checkout
+      - run:
+          name: Run SonarQube Scan
+          command: |
+            cd client
+            sonar-scanner \
+              -Dsonar.projectKey=my_project_key \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=$SONAR_HOST_URL \
+              -Dsonar.login=$SONAR_TOKEN
+
+              
 workflows:
   version: 2
   build_and_test:

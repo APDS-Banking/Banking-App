@@ -32,6 +32,21 @@ const bruteforce = new ExpressBrute(store, {
   }
 });
 
+// Middleware for JWT verification
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  try {
+    req.decoded = jwt.verify(token, JWT_SECRET);
+    next();
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid or expired token' });
+  }
+};
+
 // Login Route with bcrypt verification and JWT
 app.post("/login", bruteforce.prevent, async (req, res) => {
   const { email, password } = req.body;
@@ -127,75 +142,94 @@ app.post("/payment", async (req, res) => {
   }
 });
 
-
-// Fetch user's transactions route
-app.get("/transactions", async (req, res) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) {
-      return res.status(401).json({ message: 'Unauthorized' });
-  }
+// Fetch user's transactions route with JWT authentication
+app.get("/transactions", verifyToken, async (req, res) => {
   try {
-      const decoded = jwt.verify(token, JWT_SECRET);
-      // Fetch transactions for the logged-in user
-      const transactions = await TransactionModel.find({ userId: decoded.id });
-      res.json(transactions); // Send back the list of transactions
+    // Fetch transactions for the logged-in user
+    const transactions = await TransactionModel.find({ userId: req.decoded.id });
+    res.json(transactions); // Send back the list of transactions
   } catch (err) {
-      res.status(500).json({ message: 'Error fetching transactions', error: err });
+    res.status(500).json({ message: 'Error fetching transactions', error: err });
   }
 });
 
-// Route to update transaction status (approve/reject)
-app.put('/transactions/:id/status', async (req, res) => {
+// Route to update transaction status (approve/reject) with JWT and brute force protection
+app.put('/transactions/:id/status', [verifyToken, bruteforce.prevent], async (req, res) => {
   const { status } = req.body;
   if (!['Approved', 'Rejected'].includes(status)) {
-      return res.status(400).json({ message: 'Invalid status value' });
+    return res.status(400).json({ message: 'Invalid status value' });
   }
 
   try {
-      const transaction = await TransactionModel.findById(req.params.id);
-      if (!transaction) {
-          return res.status(404).json({ message: 'Transaction not found' });
-      }
+    const transaction = await TransactionModel.findById(req.params.id);
+    if (!transaction) {
+      return res.status(404).json({ message: 'Transaction not found' });
+    }
 
-      if (transaction.status !== 'Pending') {
-          return res.status(400).json({ message: 'Only pending transactions can be updated' });
-      }
+    if (transaction.status !== 'Pending') {
+      return res.status(400).json({ message: 'Only pending transactions can be updated' });
+    }
 
-      transaction.status = status;
-      await transaction.save();
-      res.json({ message: `Transaction ${status.toLowerCase()} successfully`, transaction });
+    transaction.status = status;
+    await transaction.save();
+    res.json({ message: `Transaction ${status.toLowerCase()} successfully`, transaction });
   } catch (error) {
-      res.status(500).json({ message: 'Error updating transaction status', error });
-  }
-});
-
-// Fetch only pending transactions for employees
-app.get('/employee/transactions', async (req, res) => {
-  try {
-      const transactions = await TransactionModel.find({ status: 'Pending' });
-      res.json(transactions);
-  } catch (error) {
-      res.status(500).json({ message: 'Error fetching transactions', error });
+    res.status(500).json({ message: 'Error updating transaction status', error });
   }
 });
 
-// Route to submit an approved transaction to SWIFT
-app.post('/transactions/:id/submit-swift', async (req, res) => {
+// Route to update transaction status (approve/reject) with JWT and brute force protection
+app.put('/transactions/:id/status', [verifyToken, bruteforce.prevent], async (req, res) => {
+  const { status } = req.body;
+  if (!['Approved', 'Rejected'].includes(status)) {
+    return res.status(400).json({ message: 'Invalid status value' });
+  }
+
   try {
-      const transaction = await TransactionModel.findById(req.params.id);
-      if (!transaction) {
-          return res.status(404).json({ message: 'Transaction not found' });
-      }
+    const transaction = await TransactionModel.findById(req.params.id);
+    if (!transaction) {
+      return res.status(404).json({ message: 'Transaction not found' });
+    }
 
-      if (transaction.status !== 'Approved') {
-          return res.status(400).json({ message: 'Only approved transactions can be submitted to SWIFT' });
-      }
+    if (transaction.status !== 'Pending') {
+      return res.status(400).json({ message: 'Only pending transactions can be updated' });
+    }
 
-      transaction.status = 'Submitted to SWIFT';
-      await transaction.save();
-      res.json({ message: 'Transaction submitted to SWIFT', transaction });
+    transaction.status = status;
+    await transaction.save();
+    res.json({ message: `Transaction ${status.toLowerCase()} successfully`, transaction });
   } catch (error) {
-      res.status(500).json({ message: 'Error submitting transaction to SWIFT', error });
+    res.status(500).json({ message: 'Error updating transaction status', error });
+  }
+});
+
+// Fetch only pending transactions for employees with brute force protection
+app.get('/employee/transactions', bruteforce.prevent, async (req, res) => {
+  try {
+    const transactions = await TransactionModel.find({ status: 'Pending' });
+    res.json(transactions);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching transactions', error });
+  }
+});
+
+// Route to submit an approved transaction to SWIFT with JWT and brute force protection
+app.post('/transactions/:id/submit-swift', [verifyToken, bruteforce.prevent], async (req, res) => {
+  try {
+    const transaction = await TransactionModel.findById(req.params.id);
+    if (!transaction) {
+      return res.status(404).json({ message: 'Transaction not found' });
+    }
+
+    if (transaction.status !== 'Approved') {
+      return res.status(400).json({ message: 'Only approved transactions can be submitted to SWIFT' });
+    }
+
+    transaction.status = 'Submitted to SWIFT';
+    await transaction.save();
+    res.json({ message: 'Transaction submitted to SWIFT', transaction });
+  } catch (error) {
+    res.status(500).json({ message: 'Error submitting transaction to SWIFT', error });
   }
 });
 app.listen(3001, () => {
